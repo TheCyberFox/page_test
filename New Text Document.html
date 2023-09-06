@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="outstanding"></div>
+
+
+<script type="text/javascript">
+    async function fetch_alerts(url) {
+        // Storing response
+        const response = await fetch(url);
+
+        // Storing data in form of JSO
+        console.log(response);
+        var data = await response.json();
+        console.log(data);
+        if (response) {
+            display_alerts(data);
+            // hideloader();
+        }
+    }
+    fetch_alerts("https://apps.pacrail.net/django/api_v1/get/outstanding_prs")
+
+    function display_alerts(data) {
+        if (Object.keys(data).length > 0) {
+            alert_list = '<h5 style="text-decoration: dashed underline #828282">Outstanding Progress Reports</h5><div style="overflow-y: auto; max-height: 65vh;">'
+            // Loop to access all rows
+            for (let key in data) {
+                alert_list += `
+        <div style="border-bottom: 1px dashed black"> ${data[key]['project']} <a class="better_button_link_lookalike" href=\"${data[key]['url']}\">Provide</a></div>`;
+            }
+            alert_list += '</div>'
+            // Setting innerHTML as tab variable
+            document.getElementById("outstanding").innerHTML = alert_list;
+        }
+    }
+</script>
+</body>
+</html>
